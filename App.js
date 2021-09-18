@@ -59,7 +59,7 @@ export default function App() {
          },
          headerTintColor : 'white' }} name ='My Profile' component = {DetailsScreen} />
 
-        <Stack.Screen  name ='Scanner' component = {QRScannerScreen} />
+        <Stack.Screen options={{header: ()=> null, }} name ='Scanner' component = {QRScannerScreen} />
 
 
         </Stack.Navigator>

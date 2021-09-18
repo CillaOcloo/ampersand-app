@@ -1,12 +1,13 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image, TextInput,ScrollView,TouchableOpacity, SafeAreaView } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default function LoginScreen({navigation}) {
     const handleSignIn =()=> {
         navigation.navigate ('Ampersand')
     }
     return (
-        <ScrollView style = {styles.container}>  
+        <KeyboardAwareScrollView style = {styles.container}>  
             <View style= {styles.imageContainer} >
                
                 <Image 
@@ -21,11 +22,7 @@ export default function LoginScreen({navigation}) {
                 < View style= {styles.detailsContainer}>
                     <View style= {styles.details}>
                         <Text style= {styles.detailsText}> Email</Text>
-                        <TextInput
-                        placeholder ={'cilla22@gmail.com'} 
-                        style= {styles.detailsInput}
-                        textAlign={'right'}
-                        />
+                        <TextInput placeholder ={'cilla22@gmail.com'} style= {styles.detailsInput}textAlign={'right'}/>
 
                     </View>
                     <View style = {styles.line}></View>
@@ -34,11 +31,7 @@ export default function LoginScreen({navigation}) {
                     < View style= {styles.detailsContainer}>
                     <View style= {styles.details}>
                         <Text style= {styles.detailsText}>Password</Text>
-                        <TextInput
-                        placeholder ={'........'} 
-                        style= {styles.detailsInput}
-                        textAlign={'right'}
-                        />
+                        <TextInput type= {'password'} placeholder ={'........'} style= {styles.detailsInput}textAlign={'right'} />
 
                     </View>
                   
@@ -65,7 +58,7 @@ export default function LoginScreen({navigation}) {
                </View>
          
 
-               </ScrollView>
+               </KeyboardAwareScrollView>
     )
 }
 

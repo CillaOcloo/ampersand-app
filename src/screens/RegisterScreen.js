@@ -1,34 +1,54 @@
-import React from 'react'
-import { View, Text,StyleSheet,Image, TouchableOpacity, TextInput, SafeAreaView } from 'react-native'
+import React ,{useState,useEffect} from 'react'
+import { View, Text,StyleSheet,Image, TouchableOpacity, TextInput, SafeAreaView, ImageBackground } from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
   const RegisterScreen = ({navigation}) => {
     
     const handleRegister = ()=> {
       navigation.navigate ('Sign In')
     }
-    let openImagePickerAsync = async () => {
-      let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-  
-      if (permissionResult.granted === false) {
-        alert("Permission to access camera roll is required!");
-        return;
+    const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
       }
-  
-      let pickerResult = await ImagePicker.launchImageLibraryAsync();
-      console.log(pickerResult);
+    })();
+  }, []);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
     }
+  };
+
       return(
-         <ScrollView>
+         <KeyboardAwareScrollView>
            <View style= {styles.maincontainer}>
-            
-                 <TouchableOpacity  onPress={openImagePickerAsync} style= {styles.container}>
-                 <AntDesign name="user" size={100} color="red"  />
+            <ImageBackground source={{uri:image}} style={{width:350,height:400}}>
+            <TouchableOpacity  onPress={pickImage} style= {styles.container}>
+                 <AntDesign name="user" size={90} color="red" style={{marginTop:50}} />
                   <Text style = {styles.subHeader}>ADD PROFILE PHOTO</Text>  
                   </TouchableOpacity>
 
+            </ImageBackground>
+                 
                   <View style= {styles.formContainer}> 
 
                       <View style= {styles.detailsContainer}>
@@ -111,7 +131,7 @@ import * as ImagePicker from 'expo-image-picker';
                </View>
            </View>
        </View>
-       </ScrollView>
+       </KeyboardAwareScrollView>
     
       )
 
@@ -119,15 +139,14 @@ import * as ImagePicker from 'expo-image-picker';
 export default RegisterScreen;
 const styles = StyleSheet.create({
   maincontainer: {
-    flex:1,
+      flex:1,
       backgroundColor:'#fff',
       justifyContent: 'center',
       alignItems: 'center',   
   },
     container: {
-      flex:0.3,
-        
-       justifyContent: 'center',
+      flex:0.6,
+        justifyContent: 'center',
         alignItems: 'center',   
     },
     subHeader:{
@@ -136,7 +155,7 @@ const styles = StyleSheet.create({
       fontSize:17,
       alignItems:'center',
       justifyContent:'center',
-      marginTop:10,
+    
 
     },
     formContainer:{
